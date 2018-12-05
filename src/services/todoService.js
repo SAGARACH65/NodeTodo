@@ -28,7 +28,7 @@ export function createTodo(todo, username) {
 }
 
 /**
- * Update new todo.
+ * Update a todo.
  *
  * @param  {Object}  user
  * @return {Promise}

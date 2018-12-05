@@ -77,7 +77,7 @@ export async function getUserToken(req) {
 }
 
 /**
- * Create new user.
+ * Login a  user.
  *
  * @param  {Object}  user
  * @return {Promise}

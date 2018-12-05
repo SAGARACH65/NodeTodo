@@ -14,9 +14,9 @@ router.get('/getAll', validateAccessToken, userController.fetchAll);
  */
 router.get('/getTokens', validateRefreshToken, userController.getTokens);
 
-// /**
-//  * GET /api/users/:id
-//  */
+/**
+ * GET /api/users/:id
+ */
 router.get('/:id', userController.fetchById);
 
 

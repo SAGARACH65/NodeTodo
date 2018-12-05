@@ -25,7 +25,7 @@ export function fetchAll(req, res, next) {
 export function create(req, res, next) {
 
   todoService
-    .createTodo(req.body,req.decodedToken.username)
+    .createTodo(req.body, req.decodedToken.username)
     .then(data => res.status(HttpStatus.CREATED).json({ message: 'todo added' }))
     .catch(err => next(err));
 }
@@ -37,13 +37,13 @@ export function create(req, res, next) {
  * @param {Object} res
  * @param {Function} next
  */
-// export function update(req, res, next) {
+export function update(req, res, next) {
 
-//   todoService
-//     .updateTodo(req.body)
-//     .then(data => res.status(HttpStatus.CREATED).json({ message: 'todo updated' }))
-//     .catch(err => next(err));
-// }
+  todoService
+    .updateTodo(req.body.title,req.body.uuid)
+    .then(data => res.status(HttpStatus.CREATED).json({ message: 'todo updated' }))
+    .catch(err => next(err));
+}
 
 /**
  * Delete Todo.

@@ -15,7 +15,6 @@ export function fetchAll(req, res, next) {
     .catch(err => next(err));
 }
 
-
 /**
  * Get a user by its id.
  *
@@ -44,6 +43,7 @@ export function create(req, res, next) {
     .then(data => res.status(HttpStatus.CREATED).json({ message: 'user created' }))
     .catch(err => next(err));
 }
+
 /**
  * Create access and refresh tokens.
  *
@@ -60,7 +60,6 @@ export function getTokens(req, res, next) {
     })
     .catch(err => next(err));
 }
-
 
 /**
  * Login a  user.
@@ -81,7 +80,6 @@ export function login(req, res, next) {
       next(err);
     })
 }
-
 
 /**
  * Update a user.

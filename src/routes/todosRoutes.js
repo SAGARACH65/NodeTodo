@@ -19,6 +19,11 @@ router.post('/add', validateAccessToken, todosController.create);
  */
 router.delete('/delete', validateAccessToken, todosController.deleteTodo);
 
+/**
+ * PUT /api/todos
+ */
+router.put('/update', validateAccessToken, todosController.update);
+
 export default router;
 
 
