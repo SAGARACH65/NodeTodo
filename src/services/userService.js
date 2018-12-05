@@ -40,7 +40,6 @@ export function getUserFromRefreshToken(req) {
   return User.where({ refreshToken: req.headers['refresh-token'] }).fetch();
 }
 
-
 /**
  * Create new user.
  *
@@ -122,7 +121,7 @@ export function updateUser(id, user) {
  * Delete a user.
  *
  * @param  {Number|String}  id
- * @return {Promise}mon
+ * @return {Promise}
  */
 export function deleteUser(id) {
   return new User({ id }).fetch().then(user => user.destroy());
