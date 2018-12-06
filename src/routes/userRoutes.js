@@ -7,12 +7,12 @@ const router = Router();
 /**
  * GET /api/users
  */
-router.get('/getAll', validateAccessToken, userController.fetchAll);
+router.get('/', validateAccessToken, userController.fetchAll);
 
 /**
- * GET /api/users
+ * POST /api/users/getTokens
  */
-router.get('/getTokens', validateRefreshToken, userController.getTokens);
+router.post('/getTokens', validateRefreshToken, userController.getTokens);
 
 /**
  * GET /api/users/:id
@@ -21,12 +21,12 @@ router.get('/:id', userController.fetchById);
 
 
 /**
- * POST /api/users
+ * POST /api/users/register
  */
 router.post('/register', userValidator, userController.create);
 
 /**
- * POST /api/users
+ * POST /api/users/login
  */
 router.post('/login', userController.login);
 

@@ -1,8 +1,11 @@
 import Boom from 'boom';
 import User from '../models/user';
+import Tokens from '../models/tokens';
 import generateHash from '../utils/hashAndSalt';
 import { generateJWT } from '../utils/JWT';
 import bcrypt from 'bcrypt';
+const uuidv1 = require('uuid/v1');
+
 
 /**
  * Get all users.
@@ -10,7 +13,6 @@ import bcrypt from 'bcrypt';
  * @return {Promise}
  */
 export function getAllUsers() {
-
   return User.fetchAll();
 }
 
@@ -37,7 +39,7 @@ export function getUser(id) {
  * @return {Promise}
  */
 export function getUserFromRefreshToken(req) {
-  return User.where({ refreshToken: req.headers['refresh-token'] }).fetch();
+  return Tokens.where({ token: req.headers['refresh-token'] }).fetch();
 }
 
 /**
@@ -50,6 +52,7 @@ export async function createUser(user) {
   return new User({
     name: user.name,
     username: user.username,
+    uuid: uuidv1(),
     password: await generateHash(user.password),
     email: user.email
   }).save();
@@ -57,7 +60,7 @@ export async function createUser(user) {
 }
 
 /**
- * Returns new the current token
+ * Returns new access token
  *
  * @param  {Object}  req
  * @return {Promise}
@@ -66,12 +69,9 @@ export async function getUserToken(req) {
   const user = await getUserFromRefreshToken(req);
 
   const accessToken = generateJWT(user.attributes, process.env.ACCESS_TOKEN_VALIDITY);
-  const refreshToken = generateJWT(user.attributes, process.env.REFRESH_TOKEN_VALIDITY);
 
-  return new Promise(async resolve => {
-    await User.where({ username: user.attributes.username }).save({ refreshToken }, { patch: true });
-    resolve({ accessToken, refreshToken, message: 'tokenized successful' });
-
+  return new Promise(resolve => {
+    resolve({ accessToken, message: 'tokenized successful' });
   });
 
 }
@@ -84,12 +84,12 @@ export async function getUserToken(req) {
  */
 export function loginUser(user) {
 
-  const accessToken = generateJWT(user, process.env.ACCESS_TOKEN_VALIDITY);
-  const refreshToken = generateJWT(user, process.env.REFRESH_TOKEN_VALIDITY);
-
   return new Promise(async (resolve, reject) => {
 
-    const USER = await new User({ username: user.username }).fetch();
+    const USER = await User.where({ username: user.username }).fetch();
+
+    const accessToken = generateJWT(USER.get('uuid'), process.env.ACCESS_TOKEN_VALIDITY);
+    const refreshToken = generateJWT(USER.get('uuid'), process.env.REFRESH_TOKEN_VALIDITY);
 
     if (!USER) return reject({ isUserNotFound: true })
 
@@ -98,7 +98,10 @@ export function loginUser(user) {
         resolve({ message: 'invalid password' });
       } else {
 
-        await User.where({ username: user.username }).save({ refreshToken }, { patch: true });
+
+        const timeStamp = Math.round(new Date().getTime() / 1000) + parseInt(process.env.REFRESH_TOKEN_VALIDITY);
+
+        await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId:1,expiry: timeStamp }).save();
 
         resolve({ accessToken, refreshToken, message: 'login successful' });
       }

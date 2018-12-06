@@ -1,14 +1,15 @@
-import Boom from 'boom';
 import Todos from '../models/todos';
 const uuidv1 = require('uuid/v1');
+
 /**
  * Get all todos.
  *
  * @return {Promise}
  */
-export function getAllTodos() {
+export function getAllTodos(userUUID) {
 
-  return Todos.fetchAll();
+
+  return Todos.where({ userUUID }).fetchAll();
 }
 
 /**
@@ -17,10 +18,10 @@ export function getAllTodos() {
  * @param  {Object}  user
  * @return {Promise}
  */
-export function createTodo(todo, username) {
+export function createTodo(todo, userUUID) {
   return new Todos({
     title: todo.title,
-    username: username,
+    userUUID,
     uuid: uuidv1(),
     status: 'incomplete'
   }).save();
@@ -33,8 +34,8 @@ export function createTodo(todo, username) {
  * @param  {Object}  user
  * @return {Promise}
  */
-export function updateTodo(title, uuid) {
-  return Todos.where({ uuid }).save({ title }, { patch: true })
+export function updateTodo(title, uuid, status) {
+  return Todos.where({ uuid }).save({ title, status }, { patch: true })
 
 }
 

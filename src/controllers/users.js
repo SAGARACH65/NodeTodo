@@ -11,7 +11,7 @@ import * as userService from '../services/userService';
 export function fetchAll(req, res, next) {
   userService
     .getAllUsers()
-    .then(data => res.json({ data }))
+    .then(data => res.json({ status: 200, ...data }))
     .catch(err => next(err));
 }
 
@@ -25,7 +25,7 @@ export function fetchAll(req, res, next) {
 export function fetchById(req, res, next) {
   userService
     .getUser(req.params.id)
-    .then(data => res.json({ data }))
+    .then(data => res.json({ status: 200, ...data }))
     .catch(err => next(err));
 }
 
@@ -40,7 +40,7 @@ export function create(req, res, next) {
 
   userService
     .createUser(req.body)
-    .then(data => res.status(HttpStatus.CREATED).json({ message: 'user created' }))
+    .then(data => res.status(HttpStatus.CREATED).json({ status: 200, message: 'user created' }))
     .catch(err => next(err));
 }
 
@@ -56,7 +56,7 @@ export function getTokens(req, res, next) {
   userService
     .getUserToken(req)
     .then(data => {
-      res.status(HttpStatus.ACCEPTED).json(data)
+      res.status(HttpStatus.ACCEPTED).json({ status: 200, ...data })
     })
     .catch(err => next(err));
 }
@@ -73,7 +73,7 @@ export function login(req, res, next) {
   userService
     .loginUser(req.body)
     .then(data => {
-      res.status(HttpStatus.ACCEPTED).json(data)
+      res.status(HttpStatus.ACCEPTED).json({ status: 200, ...data })
 
     })
     .catch(err => {
@@ -91,7 +91,7 @@ export function login(req, res, next) {
 export function update(req, res, next) {
   userService
     .updateUser(req.params.id, req.body)
-    .then(data => res.json({ data }))
+    .then(data => res.json({ status: 200, ...data }))
     .catch(err => next(err));
 }
 
@@ -105,6 +105,6 @@ export function update(req, res, next) {
 export function deleteUser(req, res, next) {
   userService
     .deleteUser(req.params.id)
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+    .then(data => res.status(HttpStatus.NO_CONTENT).json({ status: 200, ...data }))
     .catch(err => next(err));
 }

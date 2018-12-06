@@ -51,8 +51,8 @@ function findUser(req, res, next) {
  */
 function validateAccessToken(req, res, next) {
   return verifyJWT(req.headers['access-token'])
-    .then((decodedToken) => {
-      req.decodedToken = decodedToken;
+    .then((payload) => {
+      req.userUUID = payload.uuid;
       next();
     })
     .catch(err => next({ ...err, isAccessTokenExpired: true }));

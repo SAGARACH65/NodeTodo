@@ -3,20 +3,19 @@ import jwt from 'jsonwebtoken'
 const verifyJWT = (token) => {
 
   return new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-      if (err || !decodedToken) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+      if (err) {
         return reject(err)
       }
 
-      resolve(decodedToken)
+      resolve(payload)
     });
   });
 }
 
-const generateJWT = (user, expiry) => {
+const generateJWT = (uuid, expiry) => {
   const token = jwt.sign({
-
-    username: user.username
+    uuid
   }, process.env.JWT_SECRET, {
       expiresIn: expiry,
       algorithm: 'HS256'

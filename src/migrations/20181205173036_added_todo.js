@@ -12,7 +12,7 @@ export function up(knex) {
     table.timestamp('updated_at').notNull();
     table.string('title').notNull();
     table.string('status').notNull();
-    table.string('username').notNull();
+    table.string('userUUID').notNull();
     table.string('uuid').notNull().unique();
 
   });

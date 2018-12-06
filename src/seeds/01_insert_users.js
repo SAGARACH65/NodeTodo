@@ -9,20 +9,7 @@ export function seed(knex) {
     .del()
     .then(() => {
       return knex('users').insert([
-        {
-          name: 'sagar Acharya',
-          updated_at: new Date(),
-          password: 'helloworld',
-          username: 'ssa',
-          email: 'hello@gmail.com'
-        },
-        {
-          name: 'John Doe',
-          updated_at: new Date(),
-          password: 'helloworld',
-          username: 'ssa1',
-          email: 'hello1@gmail.com'
-        }
+
       ]);
     });
 }
