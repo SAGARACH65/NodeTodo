@@ -98,10 +98,9 @@ export function loginUser(user) {
         resolve({ message: 'invalid password' });
       } else {
 
-
         const timeStamp = Math.round(new Date().getTime() / 1000) + parseInt(process.env.REFRESH_TOKEN_VALIDITY);
 
-        await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId:1,expiry: timeStamp }).save();
+        await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId: 1, expiry: timeStamp }).save();
 
         resolve({ accessToken, refreshToken, message: 'login successful' });
       }

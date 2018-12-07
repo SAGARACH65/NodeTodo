@@ -10,9 +10,9 @@ const router = Router();
 router.get('/', validateAccessToken, userController.fetchAll);
 
 /**
- * POST /api/users/getTokens
+ * POST /api/users/getNewToken
  */
-router.post('/getTokens', validateRefreshToken, userController.getTokens);
+router.post('/getNewToken', validateRefreshToken, userController.getTokens);
 
 /**
  * GET /api/users/:id
