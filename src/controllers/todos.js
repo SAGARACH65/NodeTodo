@@ -57,7 +57,6 @@ export function update(req, res, next) {
  * @param {Function} next
  */
 export function deleteTodo(req, res, next) {
-
   todoService
     .deleteTodo(req.body.uuid)
     .then(data => res.status(HttpStatus.CREATED).json({ status: 200, message: 'todo deleted' }))

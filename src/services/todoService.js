@@ -1,5 +1,4 @@
 import Todos from '../models/todos';
-const uuidv1 = require('uuid/v1');
 
 /**
  * Get all todos.
@@ -8,8 +7,7 @@ const uuidv1 = require('uuid/v1');
  */
 export function getAllTodos(userUUID) {
 
-
-  return Todos.where({ userUUID }).fetchAll();
+  return Todos.where({ userUUID }).orderBy('created_at', 'ASC').fetchAll();
 }
 
 /**
@@ -22,7 +20,7 @@ export function createTodo(todo, userUUID) {
   return new Todos({
     title: todo.title,
     userUUID,
-    uuid: uuidv1(),
+    uuid: todo.uuid,
     status: 'incomplete'
   }).save();
 
@@ -46,6 +44,8 @@ export function updateTodo(title, uuid, status) {
  * @return {Promise}mon
  */
 export function deleteTodo(uuid) {
+  // return new User({ id }).fetch().then(user => user.destroy());
+
   return new Todos({ uuid }).fetch().then(todo => todo.destroy());
 }
 
