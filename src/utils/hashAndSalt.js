@@ -1,7 +1,13 @@
 import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
-const generateHash = password => {
+/**
+ * hashes a passowrd
+ *
+ * @param  {string}   password
+ * @return {Promise}
+ */
+function generateHash(password) {
   // return bcrypt.hash(password, saltRounds).then(hash => {
   //   return hash;
   // }).catch(err => console.log(err))

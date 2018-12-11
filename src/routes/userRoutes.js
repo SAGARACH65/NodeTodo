@@ -7,37 +7,37 @@ const router = Router();
 /**
  * GET /api/users
  */
-router.get('/', validateAccessToken, userController.fetchAll);
+router.get('/users', validateAccessToken, userController.fetchAll);
 
 /**
  * POST /api/users/getNewToken
  */
-router.post('/getNewToken', validateRefreshToken, userController.getTokens);
+router.get('/users/getNewToken', validateRefreshToken, userController.getTokens);
 
 /**
  * GET /api/users/:id
  */
-router.get('/:id', userController.fetchById);
+router.get('/users/:id', userController.fetchById);
 
 
 /**
  * POST /api/users/register
  */
-router.post('/register', userValidator, userController.create);
+router.post('/users/register', userValidator, userController.create);
 
 /**
  * POST /api/users/login
  */
-router.post('/login', userController.login);
+router.post('/users/login', userController.login);
 
 /**
  * PUT /api/users/:id
  */
-router.put('/:id', findUser, userValidator, userController.update);
+router.put('/users/:id', findUser, userValidator, userController.update);
 
 /**
  * DELETE /api/users/:id
  */
-router.delete('/:id', findUser, userController.deleteUser);
+router.delete('/users/:id', findUser, userController.deleteUser);
 
 export default router;

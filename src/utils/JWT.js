@@ -1,19 +1,31 @@
 import jwt from 'jsonwebtoken'
 
-const verifyJWT = (token) => {
+/**
+ * verifies a JWT
+ *
+ * @param  {string}   token
+ * @return {Promise}
+ */
+function verifyJWT(token) {
 
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
       if (err) {
         return reject(err)
       }
-
       resolve(payload)
     });
   });
 }
 
-const generateJWT = (uuid, expiry) => {
+/**
+ * generates a JWT
+ *
+ * @param  {string}   uuid
+ * @param  {string}   expiry
+ * @return {String}   token
+ */
+function generateJWT(uuid, expiry) {
   const token = jwt.sign({
     uuid
   }, process.env.JWT_SECRET, {

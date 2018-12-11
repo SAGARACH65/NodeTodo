@@ -31,7 +31,7 @@ function buildError(err) {
     };
   }
 
-  if (err.custom) {
+  if (err.isAccessTokenExpired) {
     return {
       code: 403,
       message: 'access token invalid'

@@ -1,11 +1,10 @@
 import Boom from 'boom';
-import User from '../models/user';
-import Tokens from '../models/tokens';
-import generateHash from '../utils/hashAndSalt';
-import { generateJWT } from '../utils/JWT';
 import bcrypt from 'bcrypt';
+import User from '../models/user';
 const uuidv1 = require('uuid/v1');
-
+import Tokens from '../models/tokens';
+import { generateJWT } from '../utils/JWT';
+import generateHash from '../utils/hashAndSalt';
 
 /**
  * Get all users.
@@ -68,7 +67,7 @@ export async function createUser(user) {
 export async function getUserToken(req) {
   const user = await getUserFromRefreshToken(req);
 
-  const accessToken = generateJWT(user.attributes, process.env.ACCESS_TOKEN_VALIDITY);
+  const accessToken = generateJWT(user.attributes.userUUID, process.env.ACCESS_TOKEN_VALIDITY);
 
   return new Promise(resolve => {
     resolve({ accessToken, message: 'tokenized successful' });
@@ -95,14 +94,14 @@ export function loginUser(user) {
 
     bcrypt.compare(user.password, USER.get('password'), async function (err, match) {
       if (!match) {
-        resolve({ message: 'invalid password' });
+        resolve({ message: 'invalid password', status: 401 });
       } else {
 
         const timeStamp = Math.round(new Date().getTime() / 1000) + parseInt(process.env.REFRESH_TOKEN_VALIDITY);
 
         await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId: 1, expiry: timeStamp }).save();
 
-        resolve({ accessToken, refreshToken, message: 'login successful' });
+        resolve({ accessToken, refreshToken, message: 'login successful', status: 200 });
       }
     });
   });

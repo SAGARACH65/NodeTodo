@@ -73,7 +73,7 @@ export function login(req, res, next) {
   userService
     .loginUser(req.body)
     .then(data => {
-      res.status(HttpStatus.ACCEPTED).json({ status: 200, ...data })
+      res.status(HttpStatus.ACCEPTED).json({ ...data })
 
     })
     .catch(err => {

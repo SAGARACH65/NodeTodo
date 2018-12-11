@@ -7,22 +7,22 @@ const router = Router();
 /**
  * GET /api/todos
  */
-router.get('/', validateAccessToken, todosController.fetchAll);
+router.get('/todos', validateAccessToken, todosController.fetchAll);
 
 /**
  * POST /api/todos
  */
-router.post('/', validateAccessToken, todosController.create);
+router.post('/todos', validateAccessToken, todosController.create);
 
 /**
  * Delete /api/todos
  */
-router.delete('/', validateAccessToken, todosController.deleteTodo);
+router.delete('/todos', validateAccessToken, todosController.deleteTodo);
 
 /**
  * PUT /api/todos
  */
-router.put('/', validateAccessToken, todosController.update);
+router.put('/todos', validateAccessToken, todosController.update);
 
 export default router;
 
