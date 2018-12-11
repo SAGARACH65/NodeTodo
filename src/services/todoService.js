@@ -1,39 +1,38 @@
-import Todos from '../models/todos';
+import { getAll, createNew, update, remove } from '../DAO/todoDAO';
 
 /**
  * Get all todos.
  *
+ *@param  {string}  userUUID
  * @return {Promise}
  */
 export function getAllTodos(userUUID) {
-
-  return Todos.where({ userUUID }).orderBy('created_at', 'ASC').fetchAll();
+  return getAll(userUUID);
 }
 
 /**
  * Create new todo.
  *
- * @param  {Object}  user
+ * @param  {Object}  todo
+ * @param  {string}  userUUID
+ *
  * @return {Promise}
  */
 export function createTodo(todo, userUUID) {
-  return new Todos({
-    title: todo.title,
-    userUUID,
-    uuid: todo.uuid,
-    status: 'incomplete'
-  }).save();
-
+  return createNew(todo, userUUID)
 }
 
 /**
  * Update a todo.
  *
- * @param  {Object}  user
+ * @param  {string}  title
+ * @param  {string}  uuid
+ * @param  {string}  status
+ *
  * @return {Promise}
  */
 export function updateTodo(title, uuid, status) {
-  return Todos.where({ uuid }).save({ title, status }, { patch: true })
+  return update(title, uuid, status)
 
 }
 
@@ -44,8 +43,7 @@ export function updateTodo(title, uuid, status) {
  * @return {Promise}mon
  */
 export function deleteTodo(uuid) {
-  // return new User({ id }).fetch().then(user => user.destroy());
 
-  return new Todos({ uuid }).fetch().then(todo => todo.destroy());
+  return remove(uuid)
 }
 

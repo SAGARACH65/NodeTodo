@@ -1,19 +1,10 @@
 import Boom from 'boom';
 import bcrypt from 'bcrypt';
-import User from '../models/user';
-const uuidv1 = require('uuid/v1');
+import uuidv1 from 'uuid/v1';
 import Tokens from '../models/tokens';
 import { generateJWT } from '../utils/JWT';
 import generateHash from '../utils/hashAndSalt';
-
-/**
- * Get all users.
- *
- * @return {Promise}
- */
-export function getAllUsers() {
-  return User.fetchAll();
-}
+import { getOne, getuserFromToken, getUserFromUsername, create } from '../DAO/userDAO';
 
 /**
  * Get a user.
@@ -22,7 +13,7 @@ export function getAllUsers() {
  * @return {Promise}
  */
 export function getUser(id) {
-  return new User({ id }).fetch().then(user => {
+  return getOne(id).then(user => {
     if (!user) {
       throw Boom.notFound('User not found');
     }
@@ -38,7 +29,7 @@ export function getUser(id) {
  * @return {Promise}
  */
 export function getUserFromRefreshToken(req) {
-  return Tokens.where({ token: req.headers['refresh-token'] }).fetch();
+  return getuserFromToken(req.headers['refresh-token']);
 }
 
 /**
@@ -48,14 +39,9 @@ export function getUserFromRefreshToken(req) {
  * @return {Promise}
  */
 export async function createUser(user) {
-  return new User({
-    name: user.name,
-    username: user.username,
-    uuid: uuidv1(),
-    password: await generateHash(user.password),
-    email: user.email
-  }).save();
+  const password = await generateHash(user.password);
 
+  return create(user, uuidv1(), password);
 }
 
 /**
@@ -85,8 +71,7 @@ export function loginUser(user) {
 
   return new Promise(async (resolve, reject) => {
 
-    const USER = await User.where({ username: user.username }).fetch();
-
+    const USER = await getUserFromUsername(user.username);
     const accessToken = generateJWT(USER.get('uuid'), process.env.ACCESS_TOKEN_VALIDITY);
     const refreshToken = generateJWT(USER.get('uuid'), process.env.REFRESH_TOKEN_VALIDITY);
 
@@ -105,25 +90,4 @@ export function loginUser(user) {
       }
     });
   });
-}
-
-/**
- * Update a user.
- *
- * @param  {Number|String}  id
- * @param  {Object}         user
- * @return {Promise}
- */
-export function updateUser(id, user) {
-  return new User({ id }).save({ name: user.name });
-}
-
-/**
- * Delete a user.
- *
- * @param  {Number|String}  id
- * @return {Promise}
- */
-export function deleteUser(id) {
-  return new User({ id }).fetch().then(user => user.destroy());
 }

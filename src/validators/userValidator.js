@@ -1,7 +1,7 @@
 import Joi from 'joi';
+import { verifyJWT } from '../utils/JWT';
 import validate from '../utils/validate';
 import * as userService from '../services/userService';
-import { verifyJWT } from '../utils/JWT';
 
 
 const USER = {
