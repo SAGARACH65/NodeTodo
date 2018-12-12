@@ -1,6 +1,6 @@
 
 import User from '../models/user';
-
+import Tokens from '../models/tokens';
 /**
  * Get a user
  *
@@ -18,7 +18,7 @@ export function getOne(id) {
  *  @return {Promise}
  */
 export function getuserFromToken(token) {
-  return User.where({ token }).fetch();
+  return Tokens.where({ token }).fetch();
 }
 
 /**
@@ -31,12 +31,15 @@ export function getuserFromToken(token) {
  * @return {Promise}
  */
 export function create(user, uuid, password) {
+
+  const {name,username,email}=user;
+
   return new User({
-    name: user.name,
-    username: user.username,
+    name,
+    username,
     uuid,
     password,
-    email: user.email
+    email
   }).save();
 }
 

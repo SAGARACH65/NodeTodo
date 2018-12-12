@@ -5,6 +5,7 @@ import Tokens from '../models/tokens';
 import { generateJWT } from '../utils/JWT';
 import generateHash from '../utils/hashAndSalt';
 import { getOne, getuserFromToken, getUserFromUsername, create } from '../DAO/userDAO';
+import { TOKENIZATION_SUCCESSFUL,USER_NOT_FOUND, LOGIN_SUCCESSFUL, INVALID_PASSWORD } from '../constants/messages';
 
 /**
  * Get a user.
@@ -15,7 +16,7 @@ import { getOne, getuserFromToken, getUserFromUsername, create } from '../DAO/us
 export function getUser(id) {
   return getOne(id).then(user => {
     if (!user) {
-      throw Boom.notFound('User not found');
+      throw Boom.notFound(USER_NOT_FOUND);
     }
 
     return user;
@@ -56,7 +57,7 @@ export async function getUserToken(req) {
   const accessToken = generateJWT(user.attributes.userUUID, process.env.ACCESS_TOKEN_VALIDITY);
 
   return new Promise(resolve => {
-    resolve({ accessToken, message: 'tokenized successful' });
+    resolve({ accessToken, message: TOKENIZATION_SUCCESSFUL });
   });
 
 }
@@ -79,14 +80,14 @@ export function loginUser(user) {
 
     bcrypt.compare(user.password, USER.get('password'), async function (err, match) {
       if (!match) {
-        resolve({ message: 'invalid password', status: 401 });
+        resolve({ message: INVALID_PASSWORD, status: 401 });
       } else {
 
         const timeStamp = Math.round(new Date().getTime() / 1000) + parseInt(process.env.REFRESH_TOKEN_VALIDITY);
 
         await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId: 1, expiry: timeStamp }).save();
 
-        resolve({ accessToken, refreshToken, message: 'login successful', status: 200 });
+        resolve({ accessToken, refreshToken, message: LOGIN_SUCCESSFUL, status: 200 });
       }
     });
   });

@@ -19,13 +19,15 @@ export function getAll(userUUID) {
  *  @return {Promise}
  */
 export function createNew(todo, userUUID) {
+  const { title, uuid } = todo;
+
+
   return new Todos({
-    title: todo.title,
+    title,
     userUUID,
-    uuid: todo.uuid,
+    uuid,
     status: 'incomplete'
   }).save();
-
 }
 
 /**

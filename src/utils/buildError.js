@@ -1,4 +1,5 @@
 import HttpStatus from 'http-status-codes';
+import { REFRESH_TOKEN_INVALID, USER_NOT_FOUND, ACCESS_TOKEN_INVALID } from '../constants/messages';
 
 /**
  * Build error response for validation errors.
@@ -34,21 +35,21 @@ function buildError(err) {
   if (err.isAccessTokenExpired) {
     return {
       code: 403,
-      message: 'access token invalid'
+      message: ACCESS_TOKEN_INVALID
     }
   }
 
   if (err.isRefreshTokenExpired) {
     return {
       code: 401,
-      message: 'refresh token invalid'
+      message: REFRESH_TOKEN_INVALID
     }
   }
 
   if (err.isUserNotFound) {
     return {
       code: 404,
-      message: 'User Not Found'
+      message: USER_NOT_FOUND
     }
   }
 
