@@ -5,13 +5,13 @@ import Tokens from '../models/tokens';
 import { generateJWT } from '../utils/JWT';
 import generateHash from '../utils/hashAndSalt';
 import { getOne, getuserFromToken, getUserFromUsername, create } from '../DAO/userDAO';
-import { TOKENIZATION_SUCCESSFUL,USER_NOT_FOUND, LOGIN_SUCCESSFUL, INVALID_PASSWORD } from '../constants/messages';
+import { TOKENIZATION_SUCCESSFUL, USER_NOT_FOUND, LOGIN_SUCCESSFUL, INVALID_PASSWORD } from '../constants/messages';
 
 /**
  * Get a user.
  *
  * @param  {Number|String}  id
- * @return {Promise}
+ * @returns {Promise}
  */
 export function getUser(id) {
   return getOne(id).then(user => {
@@ -24,10 +24,10 @@ export function getUser(id) {
 }
 
 /**
- * Get a user from refreshToken
+ * Get a user from refreshToken.
  *
  * @param  {Object}  req
- * @return {Promise}
+ * @returns {Promise}
  */
 export function getUserFromRefreshToken(req) {
   return getuserFromToken(req.headers['refresh-token']);
@@ -37,7 +37,7 @@ export function getUserFromRefreshToken(req) {
  * Create new user.
  *
  * @param  {Object}  user
- * @return {Promise}
+ * @returns {Promise}
  */
 export async function createUser(user) {
   const password = await generateHash(user.password);
@@ -46,10 +46,10 @@ export async function createUser(user) {
 }
 
 /**
- * Returns new access token
+ * Returns new access token.
  *
  * @param  {Object}  req
- * @return {Promise}
+ * @returns {Promise}
  */
 export async function getUserToken(req) {
   const user = await getUserFromRefreshToken(req);
@@ -59,30 +59,28 @@ export async function getUserToken(req) {
   return new Promise(resolve => {
     resolve({ accessToken, message: TOKENIZATION_SUCCESSFUL });
   });
-
 }
 
 /**
  * Login a  user.
  *
  * @param  {Object}  user
- * @return {Promise}
+ * @returns {Promise}
  */
 export function loginUser(user) {
-
   return new Promise(async (resolve, reject) => {
-
     const USER = await getUserFromUsername(user.username);
     const accessToken = generateJWT(USER.get('uuid'), process.env.ACCESS_TOKEN_VALIDITY);
     const refreshToken = generateJWT(USER.get('uuid'), process.env.REFRESH_TOKEN_VALIDITY);
 
-    if (!USER) return reject({ isUserNotFound: true })
+    if (!USER) {
+      return reject({ isUserNotFound: true });
+    }
 
-    bcrypt.compare(user.password, USER.get('password'), async function (err, match) {
+    bcrypt.compare(user.password, USER.get('password'), async function(err, match) {
       if (!match) {
         resolve({ message: INVALID_PASSWORD, status: 401 });
       } else {
-
         const timeStamp = Math.round(new Date().getTime() / 1000) + parseInt(process.env.REFRESH_TOKEN_VALIDITY);
 
         await new Tokens({ token: refreshToken, userUUID: USER.get('uuid'), deviceId: 1, expiry: timeStamp }).save();

@@ -14,7 +14,7 @@
  * Create tokens table.
  *
  * @param  {object} knex
- * @return {Promise}
+ * @returns {Promise}
  */
 export function up(knex) {
   return knex.schema.createTable('tokens', table => {
@@ -28,7 +28,6 @@ export function up(knex) {
     table.string('deviceId').notNull().unique;
     table.string('token').notNull();
     table.string('expiry').notNull();
-
   });
 }
 
@@ -36,7 +35,7 @@ export function up(knex) {
  * Drop tokens table.
  *
  * @param  {object} knex
- * @return {Promise}
+ * @returns {Promise}
  */
 export function down(knex) {
   return knex.schema.dropTable('tokens');

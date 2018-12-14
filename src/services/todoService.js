@@ -3,8 +3,9 @@ import { getAll, createNew, update, remove } from '../DAO/todoDAO';
 /**
  * Get all todos.
  *
- *@param  {string}  userUUID
- * @return {Promise}
+ * @param  {String}  userUUID
+ *
+ * @returns {Promise}
  */
 export function getAllTodos(userUUID) {
   return getAll(userUUID);
@@ -16,10 +17,10 @@ export function getAllTodos(userUUID) {
  * @param  {Object}  todo
  * @param  {string}  userUUID
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 export function createTodo(todo, userUUID) {
-  return createNew(todo, userUUID)
+  return createNew(todo, userUUID);
 }
 
 /**
@@ -29,21 +30,18 @@ export function createTodo(todo, userUUID) {
  * @param  {string}  uuid
  * @param  {string}  status
  *
- * @return {Promise}
+ * @returns {Promise}
  */
 export function updateTodo(title, uuid, status) {
-  return update(title, uuid, status)
-
+  return update(title, uuid, status);
 }
 
 /**
  * Delete a todo.
  *
  * @param  {Number|String}  uuid
- * @return {Promise}mon
+ * @returns {Promise}mon
  */
 export function deleteTodo(uuid) {
-
-  return remove(uuid)
+  return remove(uuid);
 }
-

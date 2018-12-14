@@ -5,7 +5,7 @@ import { REFRESH_TOKEN_INVALID, USER_NOT_FOUND, ACCESS_TOKEN_INVALID } from '../
  * Build error response for validation errors.
  *
  * @param  {Error} err
- * @return {Object}
+ * @returns {Object}
  */
 function buildError(err) {
   // Validation errors
@@ -36,23 +36,22 @@ function buildError(err) {
     return {
       code: 403,
       message: ACCESS_TOKEN_INVALID
-    }
+    };
   }
 
   if (err.isRefreshTokenExpired) {
     return {
       code: 401,
       message: REFRESH_TOKEN_INVALID
-    }
+    };
   }
 
   if (err.isUserNotFound) {
     return {
       code: 404,
       message: USER_NOT_FOUND
-    }
+    };
   }
-
 
   // Return INTERNAL_SERVER_ERROR for all other cases
   return {

@@ -25,5 +25,3 @@ router.delete('/todos', validateAccessToken, todosController.deleteTodo);
 router.put('/todos', validateAccessToken, todosController.update);
 
 export default router;
-
-

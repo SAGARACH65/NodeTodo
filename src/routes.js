@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
   });
 });
 
-
 /**
  * GET /api/swagger.json
  */
@@ -26,8 +25,7 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
-router.use( userRoutes);
+router.use(userRoutes);
 router.use(todosRoutes);
-
 
 export default router;

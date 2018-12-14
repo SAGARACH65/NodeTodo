@@ -37,10 +37,9 @@ export function fetchById(req, res, next) {
  * @param {Function} next
  */
 export function create(req, res, next) {
-
   userService
     .createUser(req.body)
-    .then(data => res.status(HttpStatus.CREATED).json({ status: 200, message: 'user created' }))
+    .then(() => res.status(HttpStatus.CREATED).json({ status: 200, message: 'user created' }))
     .catch(err => next(err));
 }
 
@@ -52,11 +51,10 @@ export function create(req, res, next) {
  * @param {Function} next
  */
 export function getTokens(req, res, next) {
-
   userService
     .getUserToken(req)
     .then(data => {
-      res.status(HttpStatus.ACCEPTED).json({ status: 200, ...data })
+      res.status(HttpStatus.ACCEPTED).json({ status: 200, ...data });
     })
     .catch(err => next(err));
 }
@@ -69,16 +67,14 @@ export function getTokens(req, res, next) {
  * @param {Function} next
  */
 export function login(req, res, next) {
-
   userService
     .loginUser(req.body)
     .then(data => {
-      res.status(HttpStatus.ACCEPTED).json({ ...data })
-
+      res.status(HttpStatus.ACCEPTED).json({ ...data });
     })
     .catch(err => {
       next(err);
-    })
+    });
 }
 
 /**

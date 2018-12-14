@@ -19,7 +19,6 @@ router.get('/users/getNewToken', validateRefreshToken, userController.getTokens)
  */
 router.get('/users/:id', userController.fetchById);
 
-
 /**
  * POST /api/users/register
  */

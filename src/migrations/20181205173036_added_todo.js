@@ -1,6 +1,6 @@
 /**
  * @param  {object} knex
- * @return {Promise}
+ * @returns {Promise}
  */
 export function up(knex) {
   return knex.schema.createTable('todos', table => {
@@ -13,14 +13,16 @@ export function up(knex) {
     table.string('title').notNull();
     table.string('status').notNull();
     table.string('userUUID').notNull();
-    table.string('uuid').notNull().unique();
-
+    table
+      .string('uuid')
+      .notNull()
+      .unique();
   });
 }
 
 /**
  * @param  {object} knex
- * @return {Promise}
+ * @returns {Promise}
  */
 export function down(knex) {
   return knex.schema.dropTable('todos');
