@@ -60,7 +60,7 @@
     "http-status-codes": "^1.1.6",
     "joi": "^14.3.0",
     "jsonwebtoken": "^8.4.0",
-    "knex": "^0.15.2",
+    "knex": "^0.19.5",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
